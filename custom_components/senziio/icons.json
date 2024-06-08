@@ -1,0 +1,24 @@
+{
+  "entity": {
+    "sensor": {
+      "person-counter": {
+        "default": "mdi:human"
+      },
+      "atmospheric-pressure": {
+        "default": "mdi:gauge"
+      },
+      "co2": {
+        "default": "mdi:molecule-co2"
+      },
+      "illuminance": {
+        "default": "mdi:brightness-5"
+      },
+      "humidity": {
+        "default": "mdi:water-percent"
+      },
+      "temperature": {
+        "default": "mdi:thermometer"
+      }
+    }
+  }
+}

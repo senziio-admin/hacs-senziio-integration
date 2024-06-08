@@ -1,0 +1,6 @@
+homeassistant
+pytest
+pytest-asyncio
+pytest-homeassistant-custom-component
+senziio
+zeroconf

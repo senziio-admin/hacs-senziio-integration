@@ -1,0 +1,31 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured",
+            "invalid_device_data": "Invalid device serial number or model"
+        },
+        "error": {
+            "cannot_connect": "Failed to connect. Turn on or restart device",
+            "mqtt_error": "Verify that the MQTT integration is enabled and working",
+            "repeated_title": "The provided friendly name is already in use",
+            "unknown": "Unexpected error"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "friendly_name": "Friendly Name",
+                    "model": "Device Model",
+                    "unique_id": "Unique ID (Serial Number)"
+                },
+                "title": "New Senziio Device"
+            },
+            "zeroconf_confirm": {
+                "data": {
+                    "friendly_name": "Friendly Name"
+                },
+                "description": "Do you want to add this device to Home Assistant?\n\n* Model: **{device_model}**\n* Serial Number: **{device_id}**\n",
+                "title": "New Senziio device discovered"
+            }
+        }
+    }
+}
