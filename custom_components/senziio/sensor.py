@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from custom_components.senziio import Senziio
-
 from homeassistant.components.mqtt import async_subscribe
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -22,6 +20,8 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.json import json_loads_object
+
+from custom_components.senziio import Senziio
 
 from .entity import DOMAIN, SenziioEntity
 

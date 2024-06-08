@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
@@ -14,18 +16,30 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.json import json_loads_object
 
-from .const import DOMAIN
+from custom_components.senziio import Senziio
 
-BINARY_SENSOR_DESCRIPTIONS: tuple[BinarySensorEntityDescription, ...] = (
-    BinarySensorEntityDescription(
-        key="presence",
+from .entity import DOMAIN, SenziioEntity
+
+
+@dataclass(frozen=True, kw_only=True)
+class SenziioBinarySensorEntityDescription(BinarySensorEntityDescription):
+    """Class describing Senziio sensor entities."""
+
+    value_key: str
+
+
+BINARY_SENSOR_DESCRIPTIONS: tuple[SenziioBinarySensorEntityDescription, ...] = (
+    SenziioBinarySensorEntityDescription(
         name="Presence",
+        key="presence",
+        value_key="presence",
         translation_key="presence",
         device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
-    BinarySensorEntityDescription(
-        key="motion",
+    SenziioBinarySensorEntityDescription(
         name="Motion",
+        key="motion",
+        value_key="motion",
         translation_key="motion",
         device_class=BinarySensorDeviceClass.MOTION,
     ),
@@ -39,31 +53,28 @@ async def async_setup_entry(
 ) -> None:
     """Set up Senziio entities."""
     device = hass.data[DOMAIN][entry.entry_id]
-    device_info = DeviceInfo(
-        identifiers={(DOMAIN, entry.data["unique_id"])},
-    )
     async_add_entities(
         [
-            SenziioBinarySensorEntity(hass, entity_description, device_info, device)
+            SenziioBinarySensorEntity(hass, entity_description, entry, device)
             for entity_description in BINARY_SENSOR_DESCRIPTIONS
         ]
     )
 
 
-class SenziioBinarySensorEntity(BinarySensorEntity):
+class SenziioBinarySensorEntity(SenziioEntity, BinarySensorEntity):
     """Senziio binary sensor entity."""
 
     def __init__(
         self,
         hass: HomeAssistant,
-        entity_description: BinarySensorEntityDescription,
-        device_info: DeviceInfo,
-        device,
+        entity_description: SenziioBinarySensorEntityDescription,
+        entry: ConfigEntry,
+        device: Senziio,
     ) -> None:
         """Initialize entity."""
+        super().__init__(entry)
         self.entity_description = entity_description
         self._attr_unique_id = f"{device.id}_{entity_description.key}"
-        self._attr_device_info = device_info
         self._hass = hass
         self._dt_topic = device.entity_topic(entity_description.key)
 
@@ -74,7 +85,7 @@ class SenziioBinarySensorEntity(BinarySensorEntity):
         def message_received(message):
             """Handle new MQTT messages."""
             data = json_loads_object(message.payload)
-            self._attr_is_on = data.get(self.entity_description.key) is True
+            self._attr_is_on = data.get(self.entity_description.value_key) is True
             self.async_write_ha_state()
 
         await async_subscribe(self._hass, self._dt_topic, message_received, 1)
