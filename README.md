@@ -13,27 +13,25 @@ Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
 
 2. **Go to HACS**: Click on "HACS" (Home Assistant Community Store) in the sidebar.
 
-3. **Open Integrations**: Click on "Integrations" from the top menu.
+3. **Add Custom Repository**: Click the three dots in the upper right corner and select *Custom Repositories*.
 
-4. **Add Custom Repository**: Click the three dots in the upper right corner and select "Custom Repositories".
-
-5. **Enter Repository Details**: Under "Add custom repository", enter the following details:
+4. **Enter Repository Details**: Under "Custom repositories", enter the following details:
 
     - **Repository:** `senziio-admin/python-senziio-ha`
     - **Category:** Integration
 
-6. **Add the Repository**: Click "Add" to save the custom repository.
+5. **Add the Repository**: Click "Add" to save the custom repository in the HACS list.
 
-7. **Go Back to Integrations**: Return to the "Integrations" tab in HACS.
+6. **Go Back to HACS**: Return to the HACS listing page.
 
-8. **Search for the Integration**: Type "Senziio" in the search bar.
+7. **Search for the Integration**: Type "Senziio" in the search bar.
 
-9. **Download the Integration**: You should see the Senziio integration listed. Click "Download" and follow
+8. **Download the Integration**: You should see the Senziio integration listed. Click "Download" and follow
    any prompts to complete the process.
 
-10. **Restart Home Assistant**: After the download is complete, restart Home Assistant to apply the changes.
+9. **Restart Home Assistant**: After the download is complete, restart Home Assistant to apply the changes.
 
-11. **Reload the Page**: Reload the Home Assistant UI. Re-login may be required.
+10. **Reload the Page**: Reload the Home Assistant UI. Re-login may be required.
 
 By following these steps, you will have successfully installed the Senziio integration via HACS.
 
@@ -55,7 +53,7 @@ instance for autodiscovery to work.
 
 ### Additional Information
 
-For more detailed information about integration requirements, usage, and troubleshooting, please refer to the
+For more detailed information about integration usage, requirements, and troubleshooting, please refer to the
 **[integration documentation](docs/README.md)**.
 
 ## Development
