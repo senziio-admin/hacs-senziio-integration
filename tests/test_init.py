@@ -25,7 +25,7 @@ async def test_async_setup_entry(hass: HomeAssistant):
 
     with (
         patch(
-            "custom_components.mqtt.async_wait_for_mqtt_client",
+            "homeassistant.components.mqtt.async_wait_for_mqtt_client",
             return_value=True,
         ),
         patch(
@@ -52,7 +52,7 @@ async def test_do_not_setup_entry_if_mqtt_is_not_available(hass: HomeAssistant):
 
     with (
         patch(
-            "custom_components.mqtt.async_wait_for_mqtt_client",
+            "homeassistant.components.mqtt.async_wait_for_mqtt_client",
             return_value=False,
         ),
         patch.object(
@@ -69,7 +69,7 @@ async def test_async_unload_entry(hass: HomeAssistant):
 
     with (
         patch(
-            "custom_components.mqtt.async_wait_for_mqtt_client",
+            "homeassistant.components.mqtt.async_wait_for_mqtt_client",
             return_value=True,
         ),
         patch(
