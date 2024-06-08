@@ -17,7 +17,7 @@ Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
 
 4. **Enter Repository Details**: Under "Custom repositories", enter the following details:
 
-    - **Repository:** `senziio-admin/python-senziio-ha`
+    - **Repository:** `senziio-admin/hacs-senziio-integration`
     - **Category:** Integration
 
 5. **Add the Repository**: Click "Add" to save the custom repository in the HACS list.
