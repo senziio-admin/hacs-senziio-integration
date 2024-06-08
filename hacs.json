@@ -1,7 +1,4 @@
 {
     "name": "Senziio",
-    "description": "Custom component for Senziio integration",
     "homeassistant": "2024.4.0",
-    "domains": ["senziio"],
-    "iot_class": "local_push"
 }
