@@ -32,8 +32,6 @@ easily integrated.
 - If using username and password authentication for the MQTT broker, verify that these
   credentials are correctly entered in both Home Assistant and your Senziio devices.
 
-{% include integrations/config_flow.md %}
-
 ## Adding your Senziio device
 
 Adding a Senziio device to Home Assistant can be done with ease, thanks
@@ -87,9 +85,14 @@ control your environment directly from Home Assistant:
 
 ## Sensors
 
-Integrating Senziio devices with Home Assistant adds the following sensor
-{% term entities %}, enriching your smart home ecosystem with detailed
-environmental information:
+Integrating Senziio devices with Home Assistant adds the following sensor entities,
+enriching your smart home ecosystem with detailed environmental information:
+
+- **Presence detector**: Detects human presence, enabling automation
+  for lighting, security, and energy-saving scenarios.
+
+- **Motion detector**: Identifies human movement, useful for security alerts,
+  lighting control, and activity monitoring.
 
 - **Person counter**: Counts the number of persons in an area, perfect
   for managing room occupancy and air quality control.
