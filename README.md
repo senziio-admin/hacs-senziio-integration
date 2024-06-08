@@ -26,8 +26,8 @@ Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
 
 7. **Search for the Integration**: Type "Senziio" in the search bar.
 
-8. **Download the Integration**: You should see the Senziio integration listed. Click "Download" and follow
-   any prompts to complete the process.
+8. **Download the Integration**: You should see the Senziio integration listed.
+   From item 3 dots menu, click "Download" and follow any prompts to complete the process.
 
 9. **Restart Home Assistant**: After the download is complete, restart Home Assistant to apply the changes.
 
