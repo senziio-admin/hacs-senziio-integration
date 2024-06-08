@@ -2,12 +2,13 @@
 
 from ipaddress import ip_address
 
+from senziio import Senziio
+
 from homeassistant.components import zeroconf
 from homeassistant.const import CONF_FRIENDLY_NAME, CONF_MODEL, CONF_UNIQUE_ID
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry, async_fire_mqtt_message
 
-from custom_components.senziio import Senziio
 from custom_components.senziio.entity import DOMAIN
 
 A_DEVICE_ID = "theia-pro-2F3D56AA1234"
