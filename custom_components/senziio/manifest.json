@@ -14,5 +14,7 @@
       "type": "_http._tcp.local.",
       "name": "senziio*"
     }
-  ]
+  ],
+  "icon": "custom_components/senziio/assets/icon.png",
+  "logo": "custom_components/senziio/assets/logo.png"
 }
