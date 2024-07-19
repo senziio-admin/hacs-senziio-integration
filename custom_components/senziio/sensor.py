@@ -15,6 +15,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     LIGHT_LUX,
+    PERCENTAGE,
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
@@ -65,6 +66,14 @@ SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
         translation_key="temperature",
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=PERCENTAGE,
+    ),
+    SenziioSensorEntityDescription(
+        name="Humidity",
+        key="humidity",
+        value_key="humidity",
+        translation_key="humidity",
+        state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
 )
