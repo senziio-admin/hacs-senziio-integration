@@ -65,7 +65,7 @@ SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
         translation_key="temperature",
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
 )
 

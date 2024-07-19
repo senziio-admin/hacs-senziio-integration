@@ -67,13 +67,13 @@ async def test_loading_sensor_entities(
     # check temperature entity
     topic_temperature = senziio_device.entity_topic("temperature")
 
-    await set_ha_meassure_units(hass, CONF_UNIT_SYSTEM_IMPERIAL)
-    await when_message_received_is(hass, topic_temperature, '{"temperature": 78}')
-    assert_entity_state_is(hass, TEMPERATURE_ENTITY, "78")
-
     await set_ha_meassure_units(hass, CONF_UNIT_SYSTEM_METRIC)
-    await when_message_received_is(hass, topic_temperature, '{"temperature": 78}')
-    assert_entity_state_is(hass, TEMPERATURE_ENTITY, "26")  # converted to Celsius
+    await when_message_received_is(hass, topic_temperature, '{"temperature": 26}')
+    assert_entity_state_is(hass, TEMPERATURE_ENTITY, "26")
+
+    await set_ha_meassure_units(hass, CONF_UNIT_SYSTEM_IMPERIAL)
+    await when_message_received_is(hass, topic_temperature, '{"temperature": 26}')
+    assert_entity_state_is(hass, TEMPERATURE_ENTITY, "78")  # converted to fahrenheit
 
     # person counter entity
     topic_counter = senziio_device.entity_topic("person-counter")
