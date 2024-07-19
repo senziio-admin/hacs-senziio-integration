@@ -66,7 +66,7 @@ SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
         translation_key="temperature",
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=PERCENTAGE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
     ),
     SenziioSensorEntityDescription(
         name="Humidity",
@@ -74,7 +74,7 @@ SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
         value_key="humidity",
         translation_key="humidity",
         state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        native_unit_of_measurement=PERCENTAGE,
     ),
 )
 
