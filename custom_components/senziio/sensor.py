@@ -36,13 +36,6 @@ class SenziioSensorEntityDescription(SensorEntityDescription):
 
 SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
     SenziioSensorEntityDescription(
-        name="Person Counter",
-        key="person-counter",
-        value_key="counter",
-        translation_key="person-counter",
-        state_class=SensorStateClass.MEASUREMENT,
-    ),
-    SenziioSensorEntityDescription(
         name="CO2",
         key="co2",
         value_key="co2",
