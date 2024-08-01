@@ -1,7 +1,6 @@
-[![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-[![License](https://img.shields.io/badge/License-Apache_2.0-green.svg?logo=apache)](http://www.apache.org/licenses/LICENSE-2.0)
-
 # HACS Senziio Integration
+
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 
 Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
 
@@ -17,7 +16,7 @@ Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
 
 4. **Enter Repository Details**: Under "Custom repositories", enter the following details:
 
-    - **Repository:** `senziio-admin/hacs-senziio-integration`
+    - **Repository:** `https://github.com/senziio-admin/hacs-senziio-integration`
     - **Category:** Integration
 
 5. **Add the Repository**: Click "Add" to save the custom repository in the HACS list.
