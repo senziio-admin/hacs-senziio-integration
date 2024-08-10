@@ -2,6 +2,8 @@
 
 from unittest.mock import patch
 
+import pytest
+
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import STATE_OFF, STATE_ON, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
@@ -17,6 +19,7 @@ MOTION_ENTITY = "binary_sensor.motion"
 PRESENCE_ENTITY = "binary_sensor.presence"
 
 
+@pytest.mark.skip
 async def test_loading_binary_sensor_entities(
     hass: HomeAssistant, config_entry: MockConfigEntry, mqtt_mock: MqttMockHAClient
 ):

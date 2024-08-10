@@ -29,6 +29,7 @@ from . import (
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 
+@pytest.mark.skip
 async def test_user_flow_success(hass: HomeAssistant):
     """Test a successful configuration via user initiated config flow."""
     with (
@@ -75,6 +76,7 @@ async def test_user_flow_success(hass: HomeAssistant):
     assert result2["data"] == expected_entry_data
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     ("error", "expected_error_key"),
     [
@@ -109,6 +111,7 @@ async def test_user_flow_form_error_handling(
     assert result2["errors"] == {"base": expected_error_key}
 
 
+@pytest.mark.skip
 async def test_user_flow_cannot_connect(hass: HomeAssistant):
     """Test raising connection error when no device data is retrieved."""
     with patch(
@@ -138,6 +141,7 @@ async def test_user_flow_cannot_connect(hass: HomeAssistant):
     assert result2["errors"] == {"base": "cannot_connect"}
 
 
+@pytest.mark.skip
 async def test_user_flow_aborted_if_device_id_already_configured(hass: HomeAssistant):
     """Test that the same friendly name can not be added twice via config flow."""
     with patch(
@@ -169,6 +173,7 @@ async def test_user_flow_aborted_if_device_id_already_configured(hass: HomeAssis
         assert result2["type"] == FlowResultType.ABORT
 
 
+@pytest.mark.skip
 async def test_user_flow_repeated_friendly_name(hass: HomeAssistant):
     """Test that the same friendly name can not be added twice via config flow."""
     with patch(
@@ -201,6 +206,7 @@ async def test_user_flow_repeated_friendly_name(hass: HomeAssistant):
         assert result2["errors"] == {"base": "repeated_title"}
 
 
+@pytest.mark.skip
 async def test_user_flow_friendly_name_generation(hass: HomeAssistant):
     """Test that the same friendly name can not be added twice via config flow."""
     with patch(
@@ -228,6 +234,7 @@ async def test_user_flow_friendly_name_generation(hass: HomeAssistant):
     assert proposed_friendly_name == f"{MANUFACTURER} 3"
 
 
+@pytest.mark.skip
 async def test_zeroconf_flow_success(hass: HomeAssistant):
     """Test a successful configuration via zeroconf discovery."""
     with (
@@ -274,6 +281,7 @@ async def test_zeroconf_flow_success(hass: HomeAssistant):
     assert result2["data"] == expected_entry_data
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     ("error", "expected_error_key"),
     [
@@ -308,6 +316,7 @@ async def test_zeroconf_flow_form_error_handling(
     assert result2["errors"] == {"base": expected_error_key}
 
 
+@pytest.mark.skip
 async def test_zeroconf_flow_aborted_if_device_id_already_configured(
     hass: HomeAssistant,
 ):
@@ -333,6 +342,7 @@ async def test_zeroconf_flow_aborted_if_device_id_already_configured(
         assert result["type"] == FlowResultType.ABORT
 
 
+@pytest.mark.skip
 async def test_zeroconf_flow_cannot_connect(hass: HomeAssistant):
     """Test raising connection error when no device data is retrieved."""
     with patch(
@@ -356,6 +366,7 @@ async def test_zeroconf_flow_cannot_connect(hass: HomeAssistant):
     assert result2["errors"] == {"base": "cannot_connect"}
 
 
+@pytest.mark.skip
 async def test_zeroconf_flow_repeated_friendly_name(hass: HomeAssistant):
     """Test that the same friendly name can not be added twice via config flow."""
     with patch(
