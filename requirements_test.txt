@@ -1,5 +1,6 @@
 homeassistant
 pytest
+pytest-cov
 pytest-asyncio
 pytest-homeassistant-custom-component
 senziio
