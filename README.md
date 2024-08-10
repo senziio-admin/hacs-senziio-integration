@@ -2,7 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 
-Add Senziio integration to Home Assistant via [HACS](https://hacs.xyz/).
+Add [Senziio](https://senziio.com) integration to [Home Assistant](https://www.home-assistant.io)
+via [HACS](https://hacs.xyz).
 
 ## Setup
 
