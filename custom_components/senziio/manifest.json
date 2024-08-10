@@ -1,19 +1,19 @@
 {
   "domain": "senziio",
   "name": "Senziio",
-  "version": "v1.0.1",
   "codeowners": ["@senziio-admin"],
   "config_flow": true,
   "dependencies": ["mqtt"],
   "documentation": "https://github.com/senziio-admin/hacs-senziio-integration",
-  "issue_tracker": "https://github.com/senziio-admin/hacs-senziio-integration/issues",
   "homekit": {},
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/senziio-admin/hacs-senziio-integration/issues",
   "requirements": ["senziio==0.0.1"],
+  "version": "v1.0.3",
   "zeroconf": [
     {
-      "type": "_http._tcp.local.",
-      "name": "senziio*"
+        "name": "senziio*",
+        "type": "_http._tcp.local."
     }
   ]
 }
