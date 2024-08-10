@@ -102,6 +102,7 @@ class SenziioSensorEntity(SenziioEntity, SensorEntity):
     ) -> None:
         """Initialize entity."""
         super().__init__(entry)
+        self.entity_id = f"senziio_{device.id}"
         self.entity_description = entity_description
         self._attr_unique_id = f"{device.id}_{entity_description.key}"
         self._hass = hass
