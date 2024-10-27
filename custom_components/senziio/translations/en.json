@@ -23,7 +23,7 @@
                 "data": {
                     "friendly_name": "Friendly Name"
                 },
-                "description": "Do you want to add this device to Home Assistant?\n\n* Model: **{device_model}**\n* Serial Number: **{device_id}**\n",
+                "description": "Do you want to add this device to Home Assistant?\n\n* Model: **{device_model}**\n* Serial Number: **{device_id}**",
                 "title": "New Senziio device discovered"
             }
         }
