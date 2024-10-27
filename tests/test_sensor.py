@@ -64,6 +64,7 @@ async def test_loading_sensor_entities(
     assert_entity_state_is(hass, COUNTER_ENTITY, STATE_UNKNOWN)
     assert_entity_state_is(hass, CO2_ENTITY, STATE_UNKNOWN)
     assert_entity_state_is(hass, ILLUMINANCE_ENTITY, STATE_UNKNOWN)
+    assert_entity_state_is(hass, ATM_PRESSURE_ENTITY, STATE_UNKNOWN)
 
     senziio_device = hass.data[DOMAIN][config_entry.entry_id]
 
@@ -93,6 +94,10 @@ async def test_loading_sensor_entities(
     await when_message_received_is(hass, topic_illuminance, '{"light_level": 180}')
     assert_entity_state_is(hass, ILLUMINANCE_ENTITY, "180")
 
+    # atmospheric pressure entity
+    topic_pressure = senziio_device.entity_topic("atm-pressure")
+    await when_message_received_is(hass, topic_pressure, '{"pressure": 1015.5}')
+    assert_entity_state_is(hass, ATM_PRESSURE_ENTITY, "1015.5")
 
 async def set_ha_meassure_units(hass: HomeAssistant, unit_system: str):
     """Set Home Assistant unit system."""
