@@ -4,8 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from homeassistant.config import async_process_ha_core_config
-from homeassistant.config_entries import ConfigEntryState
+from homeassistant.core_config import async_process_ha_core_config
 from homeassistant.const import (
     CONF_UNIT_SYSTEM,
     CONF_UNIT_SYSTEM_IMPERIAL,
@@ -98,6 +97,7 @@ async def test_loading_sensor_entities(
     topic_pressure = senziio_device.entity_topic("atm-pressure")
     await when_message_received_is(hass, topic_pressure, '{"pressure": 1015.5}')
     assert_entity_state_is(hass, ATM_PRESSURE_ENTITY, "1015.5")
+
 
 async def set_ha_meassure_units(hass: HomeAssistant, unit_system: str):
     """Set Home Assistant unit system."""
