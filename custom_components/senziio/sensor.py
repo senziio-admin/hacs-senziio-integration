@@ -62,7 +62,7 @@ SENSOR_DESCRIPTIONS: tuple[SenziioSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        suggested_display_precision=0,
+        suggested_display_precision=1,
     ),
     SenziioSensorEntityDescription(
         name="Humidity",
