@@ -19,6 +19,32 @@
       "temperature": {
         "default": "mdi:thermometer"
       }
+    },
+    "binary_sensor": {
+      "radar": {
+        "default": "mdi:broadcast",
+        "state": {
+          "off": "mdi:broadcast-off"
+        }
+      },
+      "beacon": {
+        "default": "mdi:access-point",
+        "state": {
+          "off": "mdi:access-point-off"
+        }
+      },
+      "pir": {
+        "default": "mdi:led-on",
+        "state": {
+          "off": "mdi:led-off"
+        }
+      },
+      "camera": {
+        "default": "mdi:camera",
+        "state": {
+          "off": "mdi:camera-off"
+        }
+      }
     }
   }
 }
