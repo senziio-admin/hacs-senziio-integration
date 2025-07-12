@@ -47,28 +47,28 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[SenziioBinarySensorEntityDescription, ...] = (
         key="radar",
         value_key="radar",
         translation_key="radar",
-        device_class=BinarySensorDeviceClass.PRESENCE,
+        device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
     SenziioBinarySensorEntityDescription(
         name="Beacon",
         key="beacon",
         value_key="beacon",
         translation_key="beacon",
-        device_class=BinarySensorDeviceClass.PRESENCE,
+        device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
     SenziioBinarySensorEntityDescription(
         name="PIR",
         key="pir",
         value_key="pir",
         translation_key="pir",
-        device_class=BinarySensorDeviceClass.PRESENCE,
+        device_class=BinarySensorDeviceClass.MOTION,
     ),
     SenziioBinarySensorEntityDescription(
         name="Camera",
         key="camera",
         value_key="camera",
         translation_key="camera",
-        device_class=BinarySensorDeviceClass.PRESENCE,
+        device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
 )
 

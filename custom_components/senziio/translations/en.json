@@ -27,33 +27,5 @@
                 "title": "New Senziio device discovered"
             }
         }
-    },
-    "entity": {
-        "binary_sensor": {
-            "radar": {
-                "state": {
-                    "on": "On",
-                    "off": "Off"
-                }
-            },
-            "beacon": {
-                "state": {
-                    "on": "On",
-                    "off": "Off"
-                }
-            },
-            "pir": {
-                "state": {
-                    "on": "On",
-                    "off": "Off"
-                }
-            },
-            "camera": {
-                "state": {
-                    "on": "On",
-                    "off": "Off"
-                }
-            }
-        }
     }
 }
