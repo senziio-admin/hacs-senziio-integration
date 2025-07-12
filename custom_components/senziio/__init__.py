@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import logging
+from collections.abc import Callable
+from pathlib import Path
 
 from senziio import Senziio, SenziioMQTT
 
@@ -14,11 +15,19 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
+from homeassistant.components.frontend import (
+    async_register_built_in_panel,
+    add_extra_js_url,
+)
+
 from .entity import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
+
+PANEL_JS = "/senziio-panel/panel-senziio-overview.js"
+PANEL_PATH = "senziio-overview"
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -41,6 +50,30 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # forward setup to all platforms
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # register the panel
+    await register_panel(hass)
+
+    return True
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    static_dir = Path(hass.config.path("custom_components/senziio/frontend"))
+
+    try:
+        # Home Assistant >= 2024.6
+        from homeassistant.components.http import StaticPathConfig
+        await hass.http.async_register_static_paths([
+            StaticPathConfig("/senziio-panel", str(static_dir), False)
+        ])
+    except ImportError:
+        # Fallback for older HA versions
+        # http://192.168.1.41:8123/senziio-panel/panel-senziio-overview.js
+        hass.http.register_static_path(
+            "/senziio-panel",
+            str(static_dir),
+            False
+        )
 
     return True
 
@@ -79,3 +112,25 @@ class SenziioHAMQTT(SenziioMQTT):
 
 class MQTTError(HomeAssistantError):
     """Error to indicate that required MQTT integration is not enabled."""
+
+
+async def register_panel(hass):
+    """Register the Senziio side panel."""
+    add_extra_js_url(hass, PANEL_JS)
+
+    async_register_built_in_panel(
+        hass,
+        component_name="custom",
+        sidebar_title="Senziio Overview",
+        sidebar_icon="mdi:thermometer",
+        frontend_url_path=PANEL_PATH,
+        config={
+            "_panel_custom": {
+                "name": PANEL_PATH,
+                "embed_iframe": False,
+                "trust_external": False,
+                "module_url": PANEL_JS,
+            }
+        },
+        require_admin=False,
+    )

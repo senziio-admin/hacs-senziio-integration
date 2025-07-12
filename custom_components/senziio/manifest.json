@@ -15,5 +15,14 @@
         "name": "senziio*",
         "type": "_http._tcp.local."
     }
+  ],
+  "panel_custom": [
+    {
+      "name": "senziio_overview",
+      "sidebar_title": "Senziio Overview",
+      "sidebar_icon": "mdi:thermometer",
+      "url_path": "senziio-overview",
+      "module_url": "/senziio-panel/panel-senziio-overview.js"
+    }
   ]
 }
