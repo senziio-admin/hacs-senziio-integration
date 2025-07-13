@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import logging
+from collections.abc import Callable
+from pathlib import Path
 
 from senziio import Senziio, SenziioMQTT
 
@@ -15,10 +16,26 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
 from .entity import DOMAIN
+from . import utils
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType):
+    # Setup senziio frontend resources
+    path = Path(__file__).parent / "frontend"
+    name1 = "demo-card.js"
+    name2 = "senziio-card.js"
+
+    utils.register_static_path(hass.http.app, "/senziio/" + name1, path / name1)
+    utils.register_static_path(hass.http.app, "/senziio/" + name2, path / name2)
+
+    version = getattr(hass.data["integrations"][DOMAIN], "version", 0)
+    await utils.init_resource(hass, "/senziio/demo-card.js", str(version))
+    await utils.init_resource(hass, "/senziio/senziio-card.js", str(version))
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
