@@ -1,67 +1,71 @@
-// senziio-data.js
+/* senziio-data.js ─────────── super-simple list card */
 
-// 1) Register your card in the Lovelace picker
+import { LitElement, html } from
+  "https://cdn.jsdelivr.net/npm/lit-element@4.1.1/+esm";
+
+/* ▒ 1 – Register in the card picker (NO “custom:” prefix!) */
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "custom:senziio-data",
-  name: "Senziio Data Card",
-  preview: true,
-  description: "Display Senziio sensors in the order you choose"
+  type:        "senziio-data",
+  name:        "Senziio Data Card",
+  preview:     true,
+  description: "Shows the Senziio entities you select, in that order"
 });
 
-class SenziioDataCard extends HTMLElement {
-  // 2) Provide a config editor (reuse the built-in entities card editor)
+/* ▒ 2 – Card implementation */
+class SenziioDataCard extends LitElement {
+
+  /* Let the built-in entities-card editor be our config UI */
   static getConfigElement() {
     return document.createElement("hui-entities-card-editor");
   }
 
-  // 3) Provide a stub config so the picker can show a preview
+  /* Preview in the picker */
   static getStubConfig() {
-    return {
-      entities: []
-    };
+    return { entities: [] };
   }
 
-  // 4) Validate & save the user’s YAML config
+  /* YAML validation */
   setConfig(config) {
-    if (!config.entities || !Array.isArray(config.entities)) {
-      throw new Error("Senziio Data Card: you must define an `entities` array");
+    if (!Array.isArray(config.entities) || !config.entities.length) {
+      throw new Error("senziio-data: define at least one entity");
     }
     this._config = config;
   }
 
-  // 5) Render whenever Home Assistant state updates
+  /* React to HA updates */
   set hass(hass) {
-    // Grab exactly the entities the user listed, in that order
+    this._hass = hass;
+    this.requestUpdate();
+  }
+
+  /* Render the list */
+  render() {
+    if (!this._hass || !this._config) return html``;
+
     const items = this._config.entities
-      .map(eid => hass.states[eid])
-      .filter(st => !!st);
+      .map(id => this._hass.states[id])
+      .filter(Boolean)                     // drop unknown ids
+      .map(st => html`
+        <li>
+          <strong>${st.attributes.friendly_name ?? st.entity_id}</strong>:
+          ${st.state}
+        </li>
+      `);
 
-    // Build a simple HTML list of “friendly_name: state”
-    const list = items
-      .map(
-        st => `<li>
-                 <strong>${st.attributes.friendly_name || st.entity_id}</strong>:
-                 ${st.state}
-               </li>`
-      )
-      .join("");
-
-    // Render inside an <ha-card>
-    this.innerHTML = `
-      <ha-card header="${this._config.title || "Senziio Sensors"}">
-        <ul style="list-style:none; padding:8px; margin:0;">
-          ${list}
+    return html`
+      <ha-card header="${this._config.title ?? 'Senziio Sensors'}">
+        <ul style="list-style:none;margin:0;padding:8px">
+          ${items}
         </ul>
       </ha-card>
     `;
   }
 
-  // 6) Tell the UI how much space this card needs
   getCardSize() {
-    return this._config.entities.length || 1;
+    return this._config?.entities?.length || 1;
   }
 }
 
-// 7) Define your custom element (must include a hyphen)
+/* ▒ 3 – Register the custom element */
 customElements.define("senziio-data", SenziioDataCard);
