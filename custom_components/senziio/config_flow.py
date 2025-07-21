@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from senziio import Senziio
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -16,6 +15,7 @@ from homeassistant.exceptions import HomeAssistantError
 
 from . import MQTTError, SenziioHAMQTT
 from .entity import DOMAIN, MANUFACTURER
+from .senziio import Senziio
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -18,13 +18,26 @@ class SenziioEntity(Entity):
 
     @property
     def device_info(self) -> DeviceInfo:
-        """Return device info."""
+        dev_reg = dr.async_get(self.hass)
+        dev_entry = dev_reg.async_get_device(
+            identifiers={(DOMAIN, self.entry.data["serial-number"])}
+        )
+        if dev_entry:
+            sw_version = dev_entry.sw_version
+            serial_number = dev_entry.serial_number
+            connections = dev_entry.connections or set()
+        else:
+            sw_version = self.entry.data.get("fw-version")
+            serial_number = self.entry.data.get("serial-number")
+            mac = self.entry.data.get("mac-address")
+            connections = {(dr.CONNECTION_NETWORK_MAC, mac)} if mac else set()
+
         return DeviceInfo(
             identifiers={(DOMAIN, self.entry.data["serial-number"])},
             name=self.entry.title,
             manufacturer=MANUFACTURER,
             model=self.entry.data["model"],
-            sw_version=self.entry.data["fw-version"],
-            serial_number=self.entry.data["serial-number"],
-            connections={(dr.CONNECTION_NETWORK_MAC, self.entry.data["mac-address"])},
+            sw_version=sw_version,
+            serial_number=serial_number,
+            connections=connections,
         )
