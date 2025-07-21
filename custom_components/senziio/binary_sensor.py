@@ -64,10 +64,10 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[SenziioBinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.MOTION,
     ),
     SenziioBinarySensorEntityDescription(
-        name="Camera",
-        key="camera",
-        value_key="camera",
-        translation_key="camera",
+        name="Thermal Image",
+        key="thermal_image",
+        value_key="thermal_image",
+        translation_key="thermal_image",
         device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
 )
