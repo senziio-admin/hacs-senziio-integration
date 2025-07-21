@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import logging
-
-from senziio import Senziio, SenziioMQTT
+from collections.abc import Callable
 
 from homeassistant.components import mqtt
 from homeassistant.components.mqtt import async_publish, async_subscribe
@@ -15,10 +13,15 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
 from .entity import DOMAIN
+from .senziio import Senziio, SenziioMQTT
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
+PLATFORMS: list[Platform] = [
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.UPDATE,
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

@@ -3,13 +3,13 @@
   "name": "Senziio",
   "codeowners": ["@senziio-admin"],
   "config_flow": true,
+  "supported_platforms": ["sensor", "binary_sensor", "update"],
   "dependencies": ["mqtt"],
   "documentation": "https://github.com/senziio-admin/hacs-senziio-integration",
   "homekit": {},
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/senziio-admin/hacs-senziio-integration/issues",
-  "requirements": ["senziio==0.0.1"],
-  "version": "v1.1.1",
+  "version": "v1.1.2",
   "zeroconf": [
     {
         "name": "senziio*",
