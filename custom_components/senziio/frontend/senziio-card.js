@@ -156,6 +156,12 @@ class SenziioCard extends HTMLElement {
       // keep only those currently in the state machine
       entityIds = entityIds.filter((id) => id in this._hass.states);
 
+      entityIds.sort((a, b) => {
+        const [ra, na] = rank(a, this._hass);
+        const [rb, nb] = rank(b, this._hass);
+        return ra !== rb ? ra - rb : na.localeCompare(nb, undefined, {sensitivity: "base"});
+      });
+
       if (entityIds.length === 0) {
         return this._placeholder("This device has no active entities.");
       }
@@ -199,6 +205,30 @@ class SenziioCard extends HTMLElement {
   getCardSize() { return 3; }
 }
 customElements.define("senziio-card", SenziioCard);
+
+const ENTITIES_ORDER = [
+  "presence",
+  "motion",
+  "radar",
+  "thermal",
+  "camera", // migrated entities keep original ID
+  "pir",
+  "beacon",
+  "temperature",
+  "humidity",
+  "co2",
+  "illuminance",
+  "pressure",
+];
+
+const rank = (id, hass) => {
+  // rank for custom entities order
+  const s = id.toLowerCase();
+  let i = ENTITIES_ORDER.findIndex(k => s.includes(k));
+  if (i === -1) i = ENTITIES_ORDER.length;
+  const name = hass.states[id]?.attributes?.friendly_name ?? id;
+  return [i, name];
+};
 
 window.customCards = window.customCards || [];
 window.customCards.push({
