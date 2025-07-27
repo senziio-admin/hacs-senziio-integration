@@ -17,7 +17,7 @@ def register_static_path(app: web.Application, url_path: str, path):
 
 async def init_resource(hass: HomeAssistant, url: str, ver: str) -> bool:
     """Initialize JS resource."""
-    resources: ResourceStorageCollection = hass.data["lovelace"]["resources"]
+    resources: ResourceStorageCollection = hass.data["lovelace"].resources
     # force load storage
     await resources.async_get_info()
 
