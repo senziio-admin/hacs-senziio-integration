@@ -14,10 +14,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.json import json_loads_object
-
-from custom_components.senziio import Senziio
+from homeassistant.helpers import entity_registry as er
 
 from .entity import DOMAIN, SenziioEntity
+from .senziio import Senziio
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -78,14 +78,23 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up Senziio entities."""
+    """Set up Senziio binary_sensor entities."""
     device = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities(
-        [
-            SenziioBinarySensorEntity(hass, entity_description, entry, device)
-            for entity_description in BINARY_SENSOR_DESCRIPTIONS
-        ]
-    )
+
+    # run entity migrations
+    def _migrator(ent_entry: er.RegistryEntry) -> dict | None:
+        if ent_entry.unique_id == f"{device.id}_camera":
+            return {"new_unique_id": f"{device.id}_thermal_image"}
+        return None
+
+    await er.async_migrate_entries(hass, entry.entry_id, _migrator)
+
+    # register entities
+    async_add_entities([
+        SenziioBinarySensorEntity(hass, descr, entry, device)
+        for descr in BINARY_SENSOR_DESCRIPTIONS
+    ])
+
 
 
 class SenziioBinarySensorEntity(SenziioEntity, BinarySensorEntity):
