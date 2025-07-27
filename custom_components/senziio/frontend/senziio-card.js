@@ -1,19 +1,54 @@
-/* pick device via registry */
 class SenziioCardEditor extends HTMLElement {
   setConfig(cfg) { this._cfg = { device: "", title: "", ...cfg }; this._render(); }
   set hass(h)    { this._hass = h; this._ensureLoaded(); }
 
   async _ensureLoaded() {
-    if (!this._hass || this._devices) { this._render(); return; }
+    if (!this._hass || this._loaded) { this._render(); return; }
+    this._loaded = true;
+
     try {
-      // load device registry
-      const all = await this._hass.callWS({ type: "config/device_registry/list" });
-      this._devices = all.filter(d => (d.manufacturer || "").toLowerCase().includes("senziio"));
-      if (this._devices.length === 0) this._devices = all; // fallback: show all devices
+      // load registries
+      const [devices, entities] = await Promise.all([
+        this._hass.callWS({ type: "config/device_registry/list" }),
+        this._hass.callWS({ type: "config/entity_registry/list" }),
+      ]);
+
+      const isActiveReg = (e) => !e.disabled_by && !e.hidden_by;
+      // Domains that define a real device for the dropdown
+      const allowedDomains = new Set(["sensor", "binary_sensor"]);
+
+      // device_id: has at least one active sensor/binary_sensor
+      const realDevIds = new Set(
+        entities
+          .filter(
+            (e) =>
+              e.device_id &&
+              isActiveReg(e) &&
+              allowedDomains.has(e.entity_id.split(".")[0])
+          )
+          .map((e) => e.device_id)
+      );
+
+      // only show real devices
+      const filtered = devices.filter((d) => {
+        const manuOk = (d.manufacturer || "")
+          .toLowerCase()
+          .includes("senziio");
+        const notService = d.entry_type !== "service";
+        const hasReal = realDevIds.has(d.id);
+        const tag = `${d.model || ""} ${d.name || ""}`.toLowerCase();
+        const notAdmin = !/(admin|integration)/i.test(tag);
+        return manuOk && notService && hasReal && notAdmin;
+      });
+
+      this._devices = filtered.length
+        ? filtered
+        : devices.filter((d) => realDevIds.has(d.id));
     } catch (e) {
-      console.error("Senziio editor: device registry error", e);
+      console.error("Senziio editor: registry error", e);
       this._devices = [];
     }
+
     this._render();
   }
 
@@ -56,16 +91,27 @@ class SenziioCardEditor extends HTMLElement {
     });
 
     wrap.appendChild(sel);
+
+    if ((this._devices?.length || 0) === 0) {
+      const note = document.createElement("div");
+      note.style.cssText = "margin-top:8px;color:var(--secondary-text-color);";
+      note.textContent = "No Senziio devices with active sensors found.";
+      wrap.appendChild(note);
+    }
+
     this.appendChild(wrap);
   }
 
   _picked(deviceId) {
     const cfg = { ...this._cfg, device: deviceId };
     this._cfg = cfg;
-    this.dispatchEvent(new CustomEvent("config-changed", { detail: { config: cfg } }));
+    this.dispatchEvent(
+      new CustomEvent("config-changed", { detail: { config: cfg } })
+    );
   }
 }
 customElements.define("senziio-card-editor", SenziioCardEditor);
+
 
 class SenziioCard extends HTMLElement {
   static getConfigElement() { return document.createElement("senziio-card-editor"); }
@@ -85,7 +131,6 @@ class SenziioCard extends HTMLElement {
   }
 
   async _build() {
-    // Show placeholder until we have config + hass
     if (!this._hass || (!this._cfg?.device && !this._cfg?.sensor)) {
       return this._placeholder("Select a device in the editor");
     }
@@ -95,24 +140,37 @@ class SenziioCard extends HTMLElement {
 
       let deviceId = this._cfg.device;
       if (!deviceId && this._cfg.sensor) {
-        const anchor = entReg.find(e => e.entity_id === this._cfg.sensor);
+        const anchor = entReg.find((e) => e.entity_id === this._cfg.sensor);
         deviceId = anchor?.device_id;
       }
       if (!deviceId) return this._placeholder("Cannot resolve device.");
 
       if (this._builtFor === deviceId && this._inner) return;
 
-      // all entities of that device_id
-      let entityIds = entReg.filter(e => e.device_id === deviceId)
-                            .map(e => e.entity_id);
+      // active registry entries for this device
+      const isActiveReg = (e) => !e.disabled_by && !e.hidden_by;
+      let entityIds = entReg
+        .filter((e) => e.device_id === deviceId && isActiveReg(e))
+        .map((e) => e.entity_id);
 
-      // build config for the official entities card
-      const device = (await this._hass.callWS({ type: "config/device_registry/list" }))
-                       .find(d => d.id === deviceId);
-      const title = this._cfg.title || device?.name_by_user || device?.name || "Senziio device";
+      // keep only those currently in the state machine
+      entityIds = entityIds.filter((id) => id in this._hass.states);
+
+      if (entityIds.length === 0) {
+        return this._placeholder("This device has no active entities.");
+      }
+
+      const devices = await this._hass.callWS({ type: "config/device_registry/list" });
+      const device = devices.find((d) => d.id === deviceId);
+      const title =
+        this._cfg.title ||
+        device?.name_by_user ||
+        device?.name ||
+        (this._hass.states[entityIds[0]]?.attributes?.friendly_name ??
+          "Senziio device");
+
       const cfg = { type: "entities", title, entities: entityIds };
 
-      // Create the official card
       const helpers = await (window.loadCardHelpers?.());
       const card = helpers
         ? helpers.createCardElement(cfg)
@@ -120,7 +178,6 @@ class SenziioCard extends HTMLElement {
       if (!helpers) card.setConfig(cfg);
       card.hass = this._hass;
 
-      // Replace previous content
       this.innerHTML = "";
       this.appendChild(card);
       this._inner = card;
