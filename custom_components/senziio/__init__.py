@@ -61,10 +61,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_setup(hass: HomeAssistant, config: ConfigType):
     """Setup senziio frontend resources."""
     path = Path(__file__).parent / "frontend"
-    name = "senziio-card.js"
     version = getattr(hass.data["integrations"][DOMAIN], "version", 0)
-    register_static_path(hass.http.app, "/senziio/" + name, path / name)
-    await init_resource(hass, f"/senziio/{name}", str(version))
+    register_static_path(hass.http.app, "/senziio/senziio-card.js", path / "senziio-card.js")
+    await init_resource(hass, "/senziio/senziio-card.js", str(version))
     return True
 
 

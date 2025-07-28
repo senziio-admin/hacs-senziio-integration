@@ -132,7 +132,7 @@ class SenziioCard extends HTMLElement {
 
   async _build() {
     if (!this._hass || (!this._cfg?.device && !this._cfg?.sensor)) {
-      return this._placeholder("Select a device in the editor");
+      return this._placeholder("Select a Senziio device");
     }
 
     try {
@@ -233,7 +233,7 @@ const rank = (id, hass) => {
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: "senziio-card",
-  name: "Senziio Data Card",
+  name: "Senziio Card",
   preview: true,
   description: "Entities card prefilled with all entities of one device"
 });
