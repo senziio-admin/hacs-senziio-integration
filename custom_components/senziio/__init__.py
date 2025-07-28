@@ -4,16 +4,18 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
+from pathlib import Path
 
 from homeassistant.components import mqtt
 from homeassistant.components.mqtt import async_publish, async_subscribe
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, ConfigType
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
 from .entity import DOMAIN
 from .senziio import Senziio, SenziioMQTT
+from .utils import init_resource, register_static_path
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -54,6 +56,15 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType):
+    """Setup senziio frontend resources."""
+    path = Path(__file__).parent / "frontend"
+    version = getattr(hass.data["integrations"][DOMAIN], "version", 0)
+    register_static_path(hass.http.app, "/senziio/senziio-card.js", path / "senziio-card.js")
+    await init_resource(hass, "/senziio/senziio-card.js", str(version))
+    return True
 
 
 class SenziioHAMQTT(SenziioMQTT):
