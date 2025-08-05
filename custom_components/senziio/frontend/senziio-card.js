@@ -149,12 +149,17 @@ class SenziioCard extends HTMLElement {
 
       // active registry entries for this device
       const isActiveReg = (e) => !e.disabled_by && !e.hidden_by;
+
       let entityIds = entReg
         .filter((e) => e.device_id === deviceId && isActiveReg(e))
         .map((e) => e.entity_id);
 
       // keep only those currently in the state machine
       entityIds = entityIds.filter((id) => id in this._hass.states);
+
+      // keep only data entities
+      const allowedDomainsShow = new Set(["sensor", "binary_sensor"]);
+      entityIds = entityIds.filter((id) => allowedDomainsShow.has(id.split(".")[0]));
 
       entityIds.sort((a, b) => {
         const [ra, na] = rank(a, this._hass);
@@ -210,8 +215,8 @@ const ENTITIES_ORDER = [
   "presence",
   "motion",
   "radar",
-  "thermal",
-  "camera", // migrated entities keep original ID
+  "camera",
+  "thermal",  // keep for compatibility
   "pir",
   "beacon",
   "temperature",
