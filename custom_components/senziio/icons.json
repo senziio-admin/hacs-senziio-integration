@@ -39,7 +39,7 @@
           "off": "mdi:led-off"
         }
       },
-      "thermal_image": {
+      "camera": {
         "default": "mdi:grid",
         "state": {
           "off": "mdi:grid-off"
