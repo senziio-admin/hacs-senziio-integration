@@ -9,7 +9,7 @@
   "homekit": {},
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/senziio-admin/hacs-senziio-integration/issues",
-  "version": "v1.1.3",
+  "version": "v1.1.4",
   "zeroconf": [
     {
         "name": "senziio*",
