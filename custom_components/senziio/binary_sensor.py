@@ -65,9 +65,9 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[SenziioBinarySensorEntityDescription, ...] = (
     ),
     SenziioBinarySensorEntityDescription(
         name="Thermal Image",
-        key="thermal_image",
-        value_key="thermal_image",
-        translation_key="thermal_image",
+        key="camera",  # legacy value 'camera' kept for compatibility with firmware
+        value_key="camera",
+        translation_key="camera",
         device_class=BinarySensorDeviceClass.OCCUPANCY,
     ),
 )
@@ -83,8 +83,8 @@ async def async_setup_entry(
 
     # run entity migrations
     def _migrator(ent_entry: er.RegistryEntry) -> dict | None:
-        if ent_entry.unique_id == f"{device.id}_camera":
-            return {"new_unique_id": f"{device.id}_thermal_image"}
+        if ent_entry.unique_id == f"{device.id}_thermal_image":
+            return {"new_unique_id": f"{device.id}_camera"}
         return None
 
     await er.async_migrate_entries(hass, entry.entry_id, _migrator)
