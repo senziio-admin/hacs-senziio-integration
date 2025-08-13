@@ -102,3 +102,21 @@ class Senziio:
             )
 
         await self.mqtt.subscribe(self.topics['device_info'], _handler)
+
+
+    async def listen_events(self, callback):
+        """Listen to events at dt/<identifier>/event."""
+        async def handle(message):
+            try:
+                payload = json.loads(message.payload)
+            except Exception:
+                logger.warning("Bad event payload: %s", message.payload)
+                return
+
+            await callback(
+                event_id=payload.get("event_id"),
+                event_name=payload.get("event_name"),
+                data=payload.get("data"),
+            )
+
+        return await self.mqtt.subscribe(self.entity_topic("event"), handle)

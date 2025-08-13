@@ -15,7 +15,7 @@ class SenziioCardEditor extends HTMLElement {
 
       const isActiveReg = (e) => !e.disabled_by && !e.hidden_by;
       // Domains that define a real device for the dropdown
-      const allowedDomains = new Set(["sensor", "binary_sensor"]);
+      const allowedDomains = new Set(["sensor", "binary_sensor", "event"]);
 
       // device_id: has at least one active sensor/binary_sensor
       const realDevIds = new Set(
@@ -158,7 +158,7 @@ class SenziioCard extends HTMLElement {
       entityIds = entityIds.filter((id) => id in this._hass.states);
 
       // keep only data entities
-      const allowedDomainsShow = new Set(["sensor", "binary_sensor"]);
+      const allowedDomainsShow = new Set(["sensor", "binary_sensor", "event"]);
       entityIds = entityIds.filter((id) => allowedDomainsShow.has(id.split(".")[0]));
 
       entityIds.sort((a, b) => {
