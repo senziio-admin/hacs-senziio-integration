@@ -14,7 +14,6 @@ def async_describe_events(
     @callback
     def _describe(evt: Event) -> dict:
         d = evt.data or {}
-        name = d.get("event_name") or d.get("name") or "Event"
 
         msg = d.get("message")
         if msg is None:
@@ -23,7 +22,7 @@ def async_describe_events(
             msg = f"{nm}: {dat}" if dat not in (None, "") else nm
 
         return {
-            "name": name,
+            "name": "Event",
             "message": msg,
             "entity_id": d.get("entity_id"),
             "domain": "event",
